@@ -1,18 +1,19 @@
-package sanciai.EmployeeDataTool;
+package sanciai.EmployeeDataTool.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "employee_data")
 public class Employee {
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name="Name")
     private String name;
     @Column(name="Email")
     private String email;
-    @Column(name="Phone Number")
+    @Column(name="Phone_Number")
     private String phoneNumber;
 
 
@@ -42,5 +43,13 @@ public class Employee {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
