@@ -2,6 +2,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const client = require('./client');
 
+/*
 class App extends React.Component {
 
     constructor(props) {
@@ -122,6 +123,13 @@ class Employee extends React.Component{
             </tr>
         )
     }
+}
+*/
+
+function App() {
+    return (
+        <div>Hello world</div>
+    )
 }
 
 ReactDOM.render(

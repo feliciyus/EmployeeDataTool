@@ -9,11 +9,11 @@ public class Employee {
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="Name")
+    @Column(name="name")
     private String name;
-    @Column(name="Email")
+    @Column(name="email")
     private String email;
-    @Column(name="Phone_Number")
+    @Column(name="phone_number")
     private String phoneNumber;
 
 
@@ -68,4 +68,5 @@ public class Employee {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
+
 }

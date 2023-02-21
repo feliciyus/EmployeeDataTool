@@ -34022,193 +34022,137 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/** @license MIT License (c) copyright 2010-20
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 var client = __webpack_require__(/*! ./client */ "./src/main/js/client.js");
-var App = /*#__PURE__*/function (_React$Component) {
-  _inherits(App, _React$Component);
-  var _super = _createSuper(App);
-  function App(props) {
-    var _this;
-    _classCallCheck(this, App);
-    _this = _super.call(this, props);
-    _this.state = {
-      employees: []
-    };
-    _this.loadEmployees = _this.loadEmployees.bind(_assertThisInitialized(_this));
-    _this.handleUpload = _this.handleUpload.bind(_assertThisInitialized(_this));
-    return _this;
-  }
-  _createClass(App, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.loadEmployees();
+
+/*
+class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {employees: []};
+        this.loadEmployees = this.loadEmployees.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
     }
-  }, {
-    key: "loadEmployees",
-    value: function loadEmployees() {
-      var _this2 = this;
-      client({
-        method: 'GET',
-        path: '/api/employees'
-      }).done(function (response) {
-        _this2.setState({
-          employees: response.entity._embedded.employees
+
+    componentDidMount() {
+        this.loadEmployees();
+    }
+
+    loadEmployees() {
+        client({method: 'GET', path: '/api/employees'}).done(response => {
+            this.setState({employees: response.entity._embedded.employees});
         });
-      });
     }
-  }, {
-    key: "handleFileSelect",
-    value: function handleFileSelect(event) {
-      var _this3 = this;
-      event.preventDefault();
-      var file = event.target.files[0];
-      var formData = new FormData();
-      formData.append('file', file);
-      client({
-        method: 'POST',
-        path: '/upload',
-        entity: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).done(function (response) {
-        console.log(response.entity);
-        _this3.loadEmployees();
-      });
-    }
-  }, {
-    key: "handleUpload",
-    value: function handleUpload(event) {
-      var _this4 = this;
-      event.preventDefault();
-      var formData = new FormData();
-      formData.append('file', event.target.file.files[0]);
-      client({
-        method: 'POST',
-        path: '/upload',
-        entity: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).done(function () {
-        _this4.loadEmployees();
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(EmployeeList, {
-        employees: this.state.employees
-      }), /*#__PURE__*/React.createElement(UploadButton, {
-        onUpload: this.handleUpload
-      }));
-    }
-  }]);
-  return App;
-}(React.Component);
-var UploadButton = /*#__PURE__*/function (_React$Component2) {
-  _inherits(UploadButton, _React$Component2);
-  var _super2 = _createSuper(UploadButton);
-  function UploadButton(props) {
-    var _this5;
-    _classCallCheck(this, UploadButton);
-    _this5 = _super2.call(this, props);
-    _this5.handleFileSelect = _this5.handleFileSelect.bind(_assertThisInitialized(_this5));
-    return _this5;
-  }
-  _createClass(UploadButton, [{
-    key: "handleFileSelect",
-    value: function handleFileSelect(event) {
-      var _this6 = this;
-      event.preventDefault();
-      var file = event.target.files[0];
-      var formData = new FormData();
-      formData.append('file', file);
-      client({
-        method: 'POST',
-        path: '/upload',
-        entity: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).done(function (response) {
-        console.log(response.entity);
-        _this6.props.onUpload();
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/React.createElement("form", {
-        onSubmit: this.props.onUpload
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "form-group"
-      }, /*#__PURE__*/React.createElement("label", {
-        htmlFor: "file"
-      }, "Select a CSV file"), /*#__PURE__*/React.createElement("input", {
-        type: "file",
-        name: "file",
-        className: "form-control-file",
-        id: "file",
-        accept: ".csv"
-      }), /*#__PURE__*/React.createElement("button", {
-        type: "submit",
-        className: "btn btn-primary"
-      }, "Upload")));
-    }
-  }]);
-  return UploadButton;
-}(React.Component);
-var EmployeeList = /*#__PURE__*/function (_React$Component3) {
-  _inherits(EmployeeList, _React$Component3);
-  var _super3 = _createSuper(EmployeeList);
-  function EmployeeList() {
-    _classCallCheck(this, EmployeeList);
-    return _super3.apply(this, arguments);
-  }
-  _createClass(EmployeeList, [{
-    key: "render",
-    value: function render() {
-      var employees = this.props.employees.map(function (employee) {
-        return /*#__PURE__*/React.createElement(Employee, {
-          key: employee._links.self.href,
-          employee: employee
+
+
+    handleFileSelect(event) {
+        event.preventDefault();
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+        client({method: 'POST', path: '/upload', entity: formData, headers: {'Content-Type': 'multipart/form-data'}}).done(response => {
+            console.log(response.entity);
+            this.loadEmployees();
         });
-      });
-      return /*#__PURE__*/React.createElement("table", null, /*#__PURE__*/React.createElement("tbody", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "name"), /*#__PURE__*/React.createElement("th", null, "email"), /*#__PURE__*/React.createElement("th", null, "phoneNumber")), employees));
     }
-  }]);
-  return EmployeeList;
-}(React.Component);
-var Employee = /*#__PURE__*/function (_React$Component4) {
-  _inherits(Employee, _React$Component4);
-  var _super4 = _createSuper(Employee);
-  function Employee() {
-    _classCallCheck(this, Employee);
-    return _super4.apply(this, arguments);
-  }
-  _createClass(Employee, [{
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, this.props.employee.name), /*#__PURE__*/React.createElement("td", null, this.props.employee.email), /*#__PURE__*/React.createElement("td", null, this.props.employee.phoneNumber));
+
+
+    handleUpload(event) {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append('file', event.target.file.files[0]);
+        client({
+            method: 'POST',
+            path: '/upload',
+            entity: formData,
+            headers: { 'Content-Type': 'multipart/form-data' },
+        }).done(() => {
+            this.loadEmployees();
+        });
     }
-  }]);
-  return Employee;
-}(React.Component);
+
+
+
+    render() {
+        return (
+            <div>
+                <EmployeeList employees={this.state.employees} />
+                <UploadButton onUpload={this.handleUpload} />
+            </div>
+        );
+    }
+}
+
+class UploadButton extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleFileSelect = this.handleFileSelect.bind(this);
+    }
+
+    handleFileSelect(event) {
+        event.preventDefault();
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+        client({method: 'POST', path: '/upload', entity: formData, headers: {'Content-Type': 'multipart/form-data'}}).done(response => {
+            console.log(response.entity);
+            this.props.onUpload();
+        });
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.props.onUpload}>
+                <div className="form-group">
+                    <label htmlFor="file">Select a CSV file</label>
+                    <input type="file" name="file" className="form-control-file" id="file" accept=".csv" />
+                    <button type="submit" className="btn btn-primary">
+                        Upload
+                    </button>
+                </div>
+            </form>
+        );
+    }
+}
+
+class EmployeeList extends React.Component{
+    render() {
+        const employees = this.props.employees.map(employee =>
+            <Employee key={employee._links.self.href} employee={employee}/>
+        );
+        return (
+            <table>
+                <tbody>
+                <tr>
+                    <th>name</th>
+                    <th>email</th>
+                    <th>phoneNumber</th>
+                </tr>
+                {employees}
+                </tbody>
+            </table>
+        )
+    }
+}
+
+class Employee extends React.Component{
+    render() {
+        return (
+            <tr>
+                <td>{this.props.employee.name}</td>
+                <td>{this.props.employee.email}</td>
+                <td>{this.props.employee.phoneNumber}</td>
+            </tr>
+        )
+    }
+}
+*/
+
+function App() {
+  return /*#__PURE__*/React.createElement("div", null, "Hello world");
+}
 ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById('react'));
 
 /***/ }),
