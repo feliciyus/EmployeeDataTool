@@ -31,6 +31,10 @@ To add new employees to the database, you can use the CSV uploader on the home p
 2. Click the "Upload" button to submit the file.
 3. The new employees will be added to the database and displayed in the table.
 
+### Demo File
+
+For testing purposes, a demo.csv file has been included in the code. You can use this file to upload sample employee records to the database and see how the app works.
+
 ### Viewing Employee Records
 
 The home page displays a table of all employees in the database. By default, 15 employees are displayed per page. You can navigate between pages using the "Next" and "Prev" buttons at the bottom of the page.
