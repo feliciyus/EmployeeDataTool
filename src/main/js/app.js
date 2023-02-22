@@ -1,7 +1,3 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const client = require('./client');
-
 /*
 class App extends React.Component {
 
@@ -127,25 +123,56 @@ class Employee extends React.Component{
 */
 
 
+
+const React = require('react');
+const ReactDOM = require('react-dom');
+const client = require('./client');
+
+
+
+
 function App() {
     const [employees, setEmployees] = React.useState([]);
+    const [currentPage, setCurrentPage] = React.useState(0);
+    const [pageSize, setPageSize] = React.useState(20);
 
 
     React.useEffect(() => {
-        loadEmployees();
+        loadEmployees(currentPage, pageSize);
     }, []);
 
-    function loadEmployees() {
-        client({ method: "GET", path: "/api/employees" }).done((response) => {
+    function loadEmployees(page = currentPage, size = pageSize, callback) {
+        const url = `/api/employees?page=${page}&size=${size}`;
+        client({ method: "GET", path: url }).done((response) => {
             console.log(response.entity._embedded.employees);
-            setEmployees(response.entity._embedded.employees);
+            setEmployees(response.entity._embedded.employees)
+            if (callback) callback();
         });
     }
 
+    function handlePrevClick() {
+        const prevPage = currentPage - 1;
+        loadEmployees(prevPage, pageSize, () => setCurrentPage(prevPage));
+    }
+
+    function handleNextClick() {
+        const nextPage = currentPage + 1;
+        loadEmployees(nextPage, pageSize, () => setCurrentPage(nextPage));
+    }
+
     return (
-        <div>
-            <EmployeeList employees={employees} />
+        <div className="container">
+            <h1>Employee List</h1>
+            <EmployeeList employees={employees} currentPage={currentPage} pageSize={pageSize} />
             <UploadButton loadEmployees={loadEmployees} />
+            <div className="pagination">
+                <button onClick={handlePrevClick} disabled={currentPage === 0}>
+                    Prev
+                </button>
+                <button onClick={handleNextClick} disabled={employees.length < pageSize}>
+                    Next
+                </button>
+            </div>
         </div>
     );
 }
@@ -194,7 +221,12 @@ function UploadButton({ loadEmployees }) {
     );
 }
 
-function EmployeeList({ employees }) {
+function EmployeeList({ employees, currentPage, pageSize }) {
+    const startIndex = currentPage * pageSize;
+    const endIndex = startIndex + pageSize;
+    const displayedEmployees = employees.slice(startIndex, endIndex);
+    const shouldDisplayAllEmployees = employees.length <= pageSize;
+
     return (
         <table>
             <tbody>
@@ -203,9 +235,15 @@ function EmployeeList({ employees }) {
                 <th>email</th>
                 <th>phoneNumber</th>
             </tr>
-            {employees.map((employee) => (
-                <Employee key={employee._links.self.href} employee={employee} />
-            ))}
+            {shouldDisplayAllEmployees ? (
+                employees.map((employee) => (
+                    <Employee key={employee._links.self.href} employee={employee} />
+                ))
+            ) : (
+                displayedEmployees.map((employee) => (
+                    <Employee key={employee._links.self.href} employee={employee} />
+                ))
+            )}
             </tbody>
         </table>
     );
