@@ -126,10 +126,99 @@ class Employee extends React.Component{
 }
 */
 
+
 function App() {
+    const [employees, setEmployees] = React.useState([]);
+
+
+    React.useEffect(() => {
+        loadEmployees();
+    }, []);
+
+    function loadEmployees() {
+        client({ method: "GET", path: "/api/employees" }).done((response) => {
+            console.log(response.entity._embedded.employees);
+            setEmployees(response.entity._embedded.employees);
+        });
+    }
+
     return (
-        <div>Hello world</div>
-    )
+        <div>
+            <EmployeeList employees={employees} />
+            <UploadButton loadEmployees={loadEmployees} />
+        </div>
+    );
+}
+
+function UploadButton({ loadEmployees }) {
+
+    const [file, setFile] = React.useState();
+
+    function handleUpload(event) {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append("file", file);
+        client({
+            method: "POST",
+            path: "/upload",
+            entity: formData,
+            headers: { "Content-Type": "multipart/form-data" },
+        })
+            .then((response) => {
+                console.log("judu1");
+                console.log(response);
+                console.log("judu2");
+                loadEmployees();
+                console.log("judu3");
+            })
+            .catch((error) => console.log(error));
+    }
+
+    return (
+        <form onSubmit={handleUpload}>
+            <div className="form-group">
+                <label htmlFor="file">Select a CSV file</label>
+                <input
+                    type="file"
+                    name="file"
+                    className="form-control-file"
+                    id="file"
+                    accept=".csv"
+                    onChange={(e)=>setFile(e.target.files[0])}
+                />
+                <button type="submit" className="btn btn-primary">
+                    Upload
+                </button>
+            </div>
+        </form>
+    );
+}
+
+function EmployeeList({ employees }) {
+    return (
+        <table>
+            <tbody>
+            <tr>
+                <th>name</th>
+                <th>email</th>
+                <th>phoneNumber</th>
+            </tr>
+            {employees.map((employee) => (
+                <Employee key={employee._links.self.href} employee={employee} />
+            ))}
+            </tbody>
+        </table>
+    );
+}
+
+function Employee({ employee }) {
+    return (
+        <tr>
+            <td>{employee.name}</td>
+            <td>{employee.email}</td>
+            <td>{employee.phoneNumber}</td>
+        </tr>
+    );
 }
 
 ReactDOM.render(

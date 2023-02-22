@@ -4,6 +4,7 @@ import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sanciai.EmployeeDataTool.entity.Employee;
@@ -19,7 +20,7 @@ public class EmployeeController {
     EmployeeRepository service;
 
     @PostMapping("/upload")
-    public String uploadData(@RequestParam("file")MultipartFile file) throws Exception {
+    public ResponseEntity<String> uploadData(@RequestParam("file")MultipartFile file) throws Exception {
         List<Employee> employeeList = new ArrayList<>();
         InputStream inputStream = file.getInputStream();
         CsvParserSettings setting = new CsvParserSettings();
@@ -34,6 +35,8 @@ public class EmployeeController {
             employeeList.add(employee);
         });
         service.saveAll(employeeList);
-        return "Upload success";
+        return ResponseEntity.ok("{\"message\": \"Upload success\"}");
     }
+
+
 }
