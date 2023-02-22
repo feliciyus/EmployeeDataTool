@@ -1,9 +1,78 @@
-table {
-    border-collapse: collapse;
+.container {
+    max-width: 800px;
+    margin: auto; /* center horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* center vertically */
+    padding: 20px;
 }
 
-td, th {
-    border: 1px solid #999;
-    padding: 0.5rem;
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+input[type="file"] {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.btn-teal {
+    background-color: teal;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.btn-teal:hover {
+    background-color: #006d6d;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px;
     text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
 }

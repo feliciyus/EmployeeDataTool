@@ -122,7 +122,49 @@ class Employee extends React.Component{
 }
 */
 
-
+// function UploadButton({ loadEmployees }) {
+//
+//     const [file, setFile] = React.useState();
+//
+//     function handleUpload(event) {
+//         event.preventDefault();
+//         const formData = new FormData();
+//         formData.append("file", file);
+//         client({
+//             method: "POST",
+//             path: "/upload",
+//             entity: formData,
+//             headers: { "Content-Type": "multipart/form-data" },
+//         })
+//             .then((response) => {
+//                 console.log("judu1");
+//                 console.log(response);
+//                 console.log("judu2");
+//                 loadEmployees();
+//                 console.log("judu3");
+//             })
+//             .catch((error) => console.log(error));
+//     }
+//
+//     return (
+//         <form onSubmit={handleUpload}>
+//             <div className="form-group">
+//                 <label htmlFor="file">Select a CSV file</label>
+//                 <input
+//                     type="file"
+//                     name="file"
+//                     className="form-control-file"
+//                     id="file"
+//                     accept=".csv"
+//                     onChange={(e)=>setFile(e.target.files[0])}
+//                 />
+//                 <button type="submit" className="btn btn-primary">
+//                     Upload
+//                 </button>
+//             </div>
+//         </form>
+//     );
+// }
 
 const React = require('react');
 const ReactDOM = require('react-dom');
@@ -130,12 +172,11 @@ const client = require('./client');
 
 
 
-
 function App() {
     const [employees, setEmployees] = React.useState([]);
     const [currentPage, setCurrentPage] = React.useState(0);
-    const [pageSize, setPageSize] = React.useState(20);
-
+    const [pageSize, setPageSize] = React.useState(15);
+    const [file, setFile] = React.useState();
 
     React.useEffect(() => {
         loadEmployees(currentPage, pageSize);
@@ -160,27 +201,6 @@ function App() {
         loadEmployees(nextPage, pageSize, () => setCurrentPage(nextPage));
     }
 
-    return (
-        <div className="container">
-            <h1>Employee List</h1>
-            <EmployeeList employees={employees} currentPage={currentPage} pageSize={pageSize} />
-            <UploadButton loadEmployees={loadEmployees} />
-            <div className="pagination">
-                <button onClick={handlePrevClick} disabled={currentPage === 0}>
-                    Prev
-                </button>
-                <button onClick={handleNextClick} disabled={employees.length < pageSize}>
-                    Next
-                </button>
-            </div>
-        </div>
-    );
-}
-
-function UploadButton({ loadEmployees }) {
-
-    const [file, setFile] = React.useState();
-
     function handleUpload(event) {
         event.preventDefault();
         const formData = new FormData();
@@ -201,25 +221,38 @@ function UploadButton({ loadEmployees }) {
             .catch((error) => console.log(error));
     }
 
+
     return (
-        <form onSubmit={handleUpload}>
+        <div className="container">
+            <h1>CSV Uploader</h1>
             <div className="form-group">
-                <label htmlFor="file">Select a CSV file</label>
+                <label htmlFor="file">settings for csv file should be ...</label>
                 <input
                     type="file"
                     name="file"
                     className="form-control-file"
                     id="file"
                     accept=".csv"
-                    onChange={(e)=>setFile(e.target.files[0])}
+                    onChange={(e) => setFile(e.target.files[0])}
                 />
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-teal" onClick={handleUpload}>
                     Upload
                 </button>
             </div>
-        </form>
+            <EmployeeList employees={employees} currentPage={currentPage} pageSize={pageSize} />
+            <div className="pagination">
+                <button onClick={handlePrevClick} disabled={currentPage === 0}>
+                    Prev
+                </button>
+                <button onClick={handleNextClick} disabled={employees.length < pageSize}>
+                    Next
+                </button>
+            </div>
+        </div>
     );
 }
+
+
 
 function EmployeeList({ employees, currentPage, pageSize }) {
     const startIndex = currentPage * pageSize;
@@ -231,9 +264,9 @@ function EmployeeList({ employees, currentPage, pageSize }) {
         <table>
             <tbody>
             <tr>
-                <th>name</th>
-                <th>email</th>
-                <th>phoneNumber</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
             </tr>
             {shouldDisplayAllEmployees ? (
                 employees.map((employee) => (
